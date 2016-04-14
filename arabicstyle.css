@@ -1,0 +1,35 @@
+body {
+    background-color: #D1FAFF;
+	font-family: /*"Dyslexie",*/ "Open Dyslexic", "Open-Dyslexic", "OpenDyslexic", "Comic Sans MS", "Comic Sans", "Verdana", "Arial";
+}
+#exerciser {
+	width: 40%;
+	height: 100px;
+	text-align: center;
+	margin: auto;
+	background-color: white;
+	border: .05vh solid black;
+}
+#arabic {
+	font-size: 40px;
+}
+#instructions {
+	width: 36%;
+	height: auto;
+	margin: 10px auto auto auto;
+	padding: 2%;
+	font-size:8px;
+	color: white;
+	background-color: grey;
+	border: .05vh solid black;
+}
+.highlight {
+	color: red;
+}
+#responsive {
+	position: fixed;
+	text-align: center;
+	font-size: 8px;
+	width: 100%;
+	bottom: 5px;
+}
