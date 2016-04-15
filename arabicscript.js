@@ -1,4 +1,4 @@
-﻿var translation = {
+var translation = {
 'لا':'No',
 'من':'From',
 'هذا':'This',
@@ -104,6 +104,7 @@ var progress = 0;
 var word;
 var language = 'Arabic Male';
 var loopspeech = false; 
+var loopspell = false;
 
 function nextword() {
 	word = vocabulary[progress];
@@ -146,31 +147,48 @@ function KeyCheck(e) {
 		break;
 		
 		case 37: // left arrow
-			spell();
+			spellsingle();
 		break;
 		
 		case 16: // shift
 			if (loopspeech == false) {
 				loopspeech = true;
 				speak();
+			} else if (loopspeech == true && loopspell == false) {
+				loopspell = true;
+				spell();
 			} else {
 				loopspeech = false;
+				loopspell = false;
 			}
 		break;
 	}
 }
 
 function spell () {
+	if (loopspell == true) {
+		spellsingle();
+		setTimeout(function() {
+			spell();
+		}, 1000);
+	} else {
+		spellsingle();
+	}
+}
+
+function spellsingle () {
 	if ($('#arabic').find('.highlight').length > 0) {
-		if ($('#arabic').find('.highlight').next().length > 1) {
-			$('#arabic').find('.highlight').removeClass('highlight').next().addClass('highlight');
-		} else {
+		if ($('#arabic').find('.highlight').next().length == 0) {
+			$('#arabic').find('.highlight').removeClass('highlight');
+		} else if ($('#arabic').find('.highlight').next().next().length == 0) {
 			$('#arabic').find('.highlight').removeClass('highlight').next().addClass('highlight');
 			setTimeout(function() {
 				$('#arabic').find('.highlight').removeClass('highlight');
 				$('#english').show();
 				if (loopspeech == false) {speak();}
 			}, 1200);
+		} else if ($('#arabic').find('.highlight').next().length > 0) {
+			$('#arabic').find('.highlight').removeClass('highlight').next().addClass('highlight');
 		}
 	} else {
 		$('#letter0').addClass('highlight');
