@@ -1,4 +1,4 @@
-var translation = {
+﻿var translation = {
 'لا':'No',
 'من':'From',
 'هذا':'This',
@@ -97,43 +97,54 @@ var translation = {
 'تريد':'You want',
 'صحيح':'Right',
 'أكثر':'More',
-'تكون':'Be'
+'تكون':'Be',
+'السلام عليكم':'Peace',
+'و عليكم السلام':'Peace'
 };
-var vocabulary = ['لا','من','هذا','أن','في','أنا','على','ما','هل','يا','و','لقد','ذلك','ماذا','أنت','هنا','لم','إلى','نعم','كان','هو','ان','هذه','هناك','عن','فى','كل','ليس','فقط','كنت','الآن','يجب','انا','لك','مع','شيء','لكن','لن','الذي','حسنا','كيف','سوف','هيا','نحن','إنه','ـ','أجل','لماذا','إذا','عندما','انه','كذلك','لي','الى','بعد','انت','هي','أين','أنه','كانت','حتى','أي','إنها','أعرف','قد','قبل','تلك','الأمر','بعض','أو','مثل','أريد','رجل','لو','أعتقد','ربما','أيها','بخير','يكون','عليك','جيد','أنك','شخص','إن','التي','ولكن','أليس','علي','أحد','به','الوقت','يمكن','انها','اليوم','شئ','تعرف','تريد','صحيح','أكثر','تكون']
+var vocabulary = ['السلام عليكم','و عليكم السلام','من','هذا','أن','في','أنا','على','ما','هل','يا','و','لقد','ذلك','ماذا','أنت','هنا','لم','إلى','نعم','كان','هو','ان','هذه','هناك','عن','فى','كل','ليس','فقط','كنت','الآن','يجب','انا','لك','مع','شيء','لكن','لن','الذي','حسنا','كيف','سوف','هيا','نحن','إنه','ـ','أجل','لماذا','إذا','عندما','انه','كذلك','لي','الى','بعد','انت','هي','أين','أنه','كانت','حتى','أي','إنها','أعرف','قد','قبل','تلك','الأمر','بعض','أو','مثل','أريد','رجل','لو','أعتقد','ربما','أيها','بخير','يكون','عليك','جيد','أنك','شخص','إن','التي','ولكن','أليس','علي','أحد','به','الوقت','يمكن','انها','اليوم','شئ','تعرف','تريد','صحيح','أكثر','تكون'];
 var progress = 0;
 var word;
 var language = 'Arabic Male';
 var loopspeech = false; 
 var loopspell = false;
 
-function nextword() {
+function nextphrase() {
 	word = vocabulary[progress];
+	var words = word.split(/[^A-z'\u0600-\u06ff]/);
 	progress ++;
+	var phrase = '';
+	for (j = 0; j < words.length; j++) {
+		phrase += nextword(words[j]) + ' ';
+	}
 	var arabic = document.createElement('div');
 	arabic.title = word;
 	arabic.lang = 'ar';
 	arabic.id = 'arabic';
-	var formattedword = '';
-	for (i = 0; i < word.length; i++) {
-		formattedword += "<span id='letter" + i + "'>";
-		if ( i == 0 ) {
-			formattedword += word[i];
-		} else {
-			formattedword += "&zwj;" + word[i];
-		}
-		if (i != word.length - 1) {
-			formattedword += "&zwj;</span>";
-		} else {
-			formattedword += "</span>";
-		}
-	}
-	arabic.innerHTML = formattedword;
+	arabic.innerHTML = phrase;
 	var english = document.createElement('div');
 	english.lang = 'en';
 	english.id = 'english';
 	english.style.display = 'none';
 	english.innerHTML = translation[ word ].toLowerCase();
 	$('#exerciser').empty().append(arabic, english);
+}
+
+function nextword(x) {
+	var formattedword = '';
+	for (i = 0; i < x.length; i++) {
+		formattedword += "<span id='letter" + i + "'>";
+		if ( i == 0 ) {
+			formattedword += x[i];
+		} else {
+			formattedword += "&zwj;" + x[i];
+		}
+		if (i != x.length - 1) {
+			formattedword += "&zwj;</span>";
+		} else {
+			formattedword += "</span>";
+		}
+	}
+	return formattedword;
 }
 
 document.onkeyup = KeyCheck;       
@@ -143,7 +154,7 @@ function KeyCheck(e) {
 	var KeyID = (window.event) ? event.keyCode : e.keyCode;
 	switch(KeyID) {
 		case 39: // right arrow
-			nextword();
+			nextphrase();
 		break;
 		
 		case 37: // left arrow
